@@ -4,5 +4,7 @@ const randomFromTo = function (from, to) {
   }
   return Math.floor(from + Math.random() * (to + 1 - from));
 };
+randomFromTo(-1,0);
 
 const checkStringSize = (string, max) => string.length <= max;
+checkStringSize('random',6);
