@@ -1,3 +1,4 @@
+import {drawWindow} from './window.js';
 const container = document.querySelector('.pictures');
 const picturesFragment = document.createDocumentFragment();
 const pictureTemplate = document.querySelector('#picture').content;
@@ -8,6 +9,9 @@ const drawPictures = (pictures) => {
     item.querySelector('.picture__img').src = picture.url;
     item.querySelector('.picture__likes').textContent = picture.likes;
     item.querySelector('.picture__comments').textContent = picture.comments.length;
+    item.addEventListener('click', () => {
+      drawWindow(picture);
+    });
     picturesFragment.appendChild(item);
   });
   container.appendChild(picturesFragment);
