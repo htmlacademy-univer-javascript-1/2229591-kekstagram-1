@@ -42,7 +42,7 @@ const generatePictures = () =>
     url: `photos/${i + 1}.jpg`,
     description: 'Just another photo',
     likes: randomFromTo(15, 200),
-    comments: [generateComments(i + 1, randomFromTo(1, MAX_COMMENTS))]
+    comments: generateComments(i + 1, randomFromTo(1, MAX_COMMENTS))
   })
   );
 
