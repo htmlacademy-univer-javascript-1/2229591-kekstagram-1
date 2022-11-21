@@ -4,11 +4,6 @@ const commentCounter = image.querySelector('.social__comment-count');
 const commentsLoader = image.querySelector('.comments-loader');
 const commentsWindow = image.querySelector('.social__comments');
 
-const closePicture = () => {
-  image.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-};
-
 const drawComments = (comments) => {
   comments.forEach((comment) => {
     const p = document.createElement('p');
@@ -29,15 +24,24 @@ const drawComments = (comments) => {
   );
 };
 
-const drawWindow = (picture) => {
-  image.classList.remove('hidden');
+export const hide = (element) => {
+  element.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+};
+
+export const show = (element) => {
   document.body.classList.add('modal-open');
+  element.classList.remove('hidden');
+};
+
+export const drawWindow = (picture) => {
+  show(image);
   commentCounter.classList.add('hidden');
   commentsLoader.classList.add('hidden');
-  close.addEventListener('click', closePicture);
+  close.addEventListener('click', () => hide(image));
   document.addEventListener('keydown',(evt) => {
     if (evt.key === 'Escape') {
-      closePicture();
+      hide(image);
     }
   });
   image.querySelector('.big-picture__img').querySelector('img').src = picture.url;
@@ -46,10 +50,8 @@ const drawWindow = (picture) => {
   const comments = picture.comments;
   image.querySelector('.comments-count').textContent = comments.length.toString();
   const oldComments = image.querySelectorAll('.social__comment');
-  oldComments.forEach((comment)=>{
-    comment.remove();
-  });
+  oldComments.forEach((comment)=>
+    comment.remove());
   drawComments(comments);
 };
 
-export {drawWindow};
