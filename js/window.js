@@ -45,20 +45,24 @@ export const show = (element) => {
   element.classList.remove('hidden');
 };
 
+
 const exit = () => {
   hide(image);
   commentsLoader.removeEventListener('click',drawComments);
+  close.removeEventListener('click', exit);
+};
+
+const escExit = (evt) => {
+  if (evt.key === 'Escape') {
+    exit();
+  }
 };
 
 export const drawWindow = (picture) => {
   loaded=0;
   show(image);
   close.addEventListener('click', exit);
-  document.addEventListener('keydown',(evt) => {
-    if (evt.key === 'Escape') {
-      exit();
-    }
-  });
+  document.addEventListener('keydown',escExit);
   image.querySelector('.big-picture__img').querySelector('img').src = picture.url;
   image.querySelector('.likes-count').textContent = picture.likes;
   image.querySelector('.social__caption').textContent = picture.description;

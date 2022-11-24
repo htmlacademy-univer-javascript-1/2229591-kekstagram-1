@@ -1,5 +1,7 @@
 import {show, hide} from './window.js';
 import {checkStringSize} from './utils.js';
+import {startEffects, finishEffects} from './effects.js';
+import {startZoom, removeZoom} from './zoom.js';
 const uploader = document.querySelector('#upload-file');
 const overlay = document.querySelector('.img-upload__overlay');
 const cancel = document.querySelector('#upload-cancel');
@@ -14,17 +16,24 @@ let commentsCorrect = true;
 let tagsCorrect = true;
 const close = () => {
   uploader.value = '';
+  finishEffects();
   hide(overlay);
+  removeZoom();
+  cancel.removeEventListener('click', close);
+};
+
+const closing = (evt) => {
+  if (evt.key === 'Escape') {
+    close();
+  }
 };
 
 uploader.addEventListener('change', () => {
   show(overlay);
+  startEffects();
+  startZoom();
   cancel.addEventListener('click', close);
-  document.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape') {
-      close();
-    }
-  });
+  document.addEventListener('keydown', closing);
 });
 
 hashtag.onfocus = () => {
