@@ -67,13 +67,13 @@ export const clearFilter = () => {
   imgPreview.style.filter = 'none';
   level.value=0;
   slider.classList.add('hidden');
-  imgPreview.setAttribute("class", "img-upload__preview")
+  imgPreview.setAttribute('class', 'img-upload__preview');
   imgPreview.classList.add('effects__preview--none');
-}
+};
 
 const effectSelection = (evt) => {
-  const evt_id = evt.target.id;
-  const splited = evt_id.split('-');
+  const evtId = evt.target.id;
+  const splited = evtId.split('-');
   if (splited.length !== 2) {
     return;
   }
@@ -84,7 +84,7 @@ const effectSelection = (evt) => {
   if (effect==='none') {
     clearFilter();
   } else {
-    imgPreview.setAttribute("class", "img-upload__preview")
+    imgPreview.setAttribute('class', 'img-upload__preview');
     imgPreview.classList.add(`effects__preview--${effect}`);
     if (slider.classList.contains('hidden')) {
       slider.classList.remove('hidden');
@@ -101,9 +101,9 @@ const effectSelection = (evt) => {
 export const startEffects = () => {
   uploadForm.addEventListener('change', effectSelection);
   clearFilter();
-}
+};
 
 export const finishEffects = () => {
   uploadForm.removeEventListener('change', effectSelection);
   clearFilter();
-}
+};

@@ -45,18 +45,18 @@ export const show = (element) => {
   element.classList.remove('hidden');
 };
 
+
 const exit = () => {
   hide(image);
   commentsLoader.removeEventListener('click',drawComments);
   close.removeEventListener('click', exit);
-  document.removeEventListener('keydown',escExit);
 };
 
 const escExit = (evt) => {
   if (evt.key === 'Escape') {
     exit();
   }
-}
+};
 
 export const drawWindow = (picture) => {
   loaded=0;
@@ -74,6 +74,5 @@ export const drawWindow = (picture) => {
     comment.remove());
   drawComments();
   commentsLoader.addEventListener('click',drawComments);
-
 };
 

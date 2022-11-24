@@ -20,14 +20,13 @@ const close = () => {
   hide(overlay);
   removeZoom();
   cancel.removeEventListener('click', close);
-  document.removeEventListener('keydown', closing);
 };
 
 const closing = (evt) => {
   if (evt.key === 'Escape') {
     close();
   }
-}
+};
 
 uploader.addEventListener('change', () => {
   show(overlay);
