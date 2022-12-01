@@ -1,7 +1,7 @@
-import {drawPictures} from './render.js';
+import {renderPictures} from './render.js';
 const error = document.querySelector('#error').content.querySelector('section').cloneNode(true);
 const onResult = (photos) => {
-  drawPictures(photos);
+  renderPictures(photos);
 };
 
 const onError = () => {
