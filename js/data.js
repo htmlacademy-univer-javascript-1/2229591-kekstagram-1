@@ -36,7 +36,7 @@ const generateComments = (id, number) => {
 };
 
 
-const generatePictures = () =>
+async function generatePictures() {
   Array.from(new Array(25), (_, i) => ({
     id: i + 1,
     url: `photos/${i + 1}.jpg`,
@@ -45,5 +45,6 @@ const generatePictures = () =>
     comments: generateComments(i + 1, randomFromTo(1, MAX_COMMENTS))
   })
   );
+}
 
 export {generatePictures};
