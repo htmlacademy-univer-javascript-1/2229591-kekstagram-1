@@ -3,7 +3,7 @@ import {checkStringSize} from './utils.js';
 import {startEffects, finishEffects} from './effects.js';
 import {startZoom, removeZoom} from './zoom.js';
 import {post} from './net.js';
-
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const uploader = document.querySelector('#upload-file');
 const body = document.querySelector('body');
 const overlay = document.querySelector('.img-upload__overlay');
@@ -14,6 +14,8 @@ const hashtag = form.querySelector('.text__hashtags');
 const submit = form.querySelector('.img-upload__submit');
 const success = document.querySelector('#success').content.querySelector('section');
 const error = document.querySelector('#error').content.querySelector('section');
+const preview = document.querySelector('.img-upload__preview').querySelector('img');
+const effectsPreviews = document.querySelectorAll('.effects__preview');
 const LENGTH_LIMIT = 140;
 const commentsRegex = /^#[а-яa-zё0-9]{1,19}$/;
 const emptyRegex = /^\s*$/;
@@ -33,6 +35,16 @@ const escClosing = (evt) => {
 };
 
 uploader.addEventListener('change', () => {
+  const file = uploader.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) =>
+    fileName.endsWith(it)
+  );
+  if (matches) {
+    const url = URL.createObjectURL(file);
+    preview.src=url;
+    effectsPreviews.forEach((effectPreview)=>{effectPreview.style.backgroundImage=`url(${url})`;});
+  }
   show(overlay);
   startEffects();
   startZoom();
