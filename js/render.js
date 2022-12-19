@@ -8,6 +8,7 @@ const container = document.querySelector('.pictures');
 const picturesFragment = document.createDocumentFragment();
 const pictureTemplate = document.querySelector('#picture').content;
 const newPictureTemplate = pictureTemplate.querySelector('.picture');
+const NUMBER_OF_RANDOM = 10;
 let savedPictures = null;
 const drawPictures = (pictures) => {
   pictures.forEach((picture) => {
@@ -21,7 +22,6 @@ const drawPictures = (pictures) => {
     picturesFragment.appendChild(item);
   });
   container.appendChild(picturesFragment);
-  picturesFragment.childNodes.forEach((node) => node.remove());
 };
 
 const clear = () => {
@@ -35,20 +35,20 @@ const changeActiveButton = (filter) => {
   currentButton.classList.add('img-filters__button--active');
 };
 
-const defaultSorting = () => {
+const sortDefault = () => {
   changeActiveButton('#filter-default');
   clear();
   drawPictures(savedPictures);
 };
 
-const randomSorting = () => {
+const sortRandom = () => {
   changeActiveButton('#filter-random');
-  const randomPictures = savedPictures.slice().sort(() => .5 - Math.random()).slice(0,10);
+  const randomPictures = savedPictures.slice().sort(() => .5 - Math.random()).slice(0,NUMBER_OF_RANDOM);
   clear();
   drawPictures(randomPictures);
 };
 
-const discussedSorting = () => {
+const sortDiscussed = () => {
   const discussedPictures = savedPictures.slice().sort((a,b) => b.comments.length-a.comments.length);
   changeActiveButton('#filter-discussed');
   clear();
@@ -57,9 +57,9 @@ const discussedSorting = () => {
 
 const sortListeners = () => {
   filters.classList.remove('img-filters--inactive');
-  defaultFilter.addEventListener('click', debounce(defaultSorting));
-  randomFilter.addEventListener('click', debounce(randomSorting));
-  discussedFilter.addEventListener('click', debounce(discussedSorting));
+  defaultFilter.addEventListener('click', debounce(sortDefault));
+  randomFilter.addEventListener('click', debounce(sortRandom));
+  discussedFilter.addEventListener('click', debounce(sortDiscussed));
 };
 
 export const renderPictures = (pictures) => {

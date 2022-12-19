@@ -1,12 +1,5 @@
 
 export const checkStringSize = (string, max) => string.length <= max;
-export const randomFromTo = function (from, to) {
-  if (to < 0 || from < 0 || to < from) {
-    return -1;
-  }
-  return Math.floor(from + Math.random() * (to + 1 - from));
-};
-
 export function debounce (callback, timeoutDelay = 500) {
   let timeoutId;
   return (...rest) => {
@@ -14,3 +7,7 @@ export function debounce (callback, timeoutDelay = 500) {
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
 }
+
+export const errorMessage = document.querySelector('#error').content.querySelector('section').cloneNode(true);
+export const successMessage = document.querySelector('#success').content.querySelector('section').cloneNode(true);
+
