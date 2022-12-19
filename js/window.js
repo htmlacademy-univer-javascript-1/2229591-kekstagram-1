@@ -3,6 +3,9 @@ const close = image.querySelector('.big-picture__cancel');
 const commentCounter = image.querySelector('.comments-loaded');
 const commentsLoader = image.querySelector('.comments-loader');
 const commentsWindow = image.querySelector('.social__comments');
+const COMMENT_WIDTH = 35;
+const COMMENT_HEIGHT = 35;
+const COMMENTS_NUMBER = 5;
 let comments;
 let loaded = 0;
 const drawComment = (comment) => {
@@ -13,8 +16,8 @@ const drawComment = (comment) => {
   img.classList.add('social__picture');
   img.src = comment.avatar;
   img.alt = comment.name;
-  img.width = 35;
-  img.height = 35;
+  img.width = COMMENT_WIDTH;
+  img.height = COMMENT_HEIGHT;
   const commentFrame = document.createElement('li');
   commentFrame.classList.add('social__comment');
   commentFrame.appendChild(img);
@@ -22,15 +25,15 @@ const drawComment = (comment) => {
   commentsWindow.appendChild(commentFrame);
 };
 const drawComments = () => {
-  if (comments.length-loaded<=5) {
+  if (comments.length-loaded<=COMMENTS_NUMBER) {
     const commentsCopy = comments.slice(loaded, comments.length);
     commentsCopy.forEach((comment) => drawComment(comment));
     commentsLoader.classList.add('hidden');
     loaded=comments.length;
   } else {
-    const commentsCopy = comments.slice(loaded, loaded+5);
+    const commentsCopy = comments.slice(loaded, loaded+COMMENTS_NUMBER);
     commentsCopy.forEach((comment) => drawComment(comment));
-    loaded += 5;
+    loaded += COMMENTS_NUMBER;
   }
   commentCounter.textContent = loaded;
 };

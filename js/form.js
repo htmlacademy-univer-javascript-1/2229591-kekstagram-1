@@ -1,9 +1,9 @@
 import {show, hide} from './window.js';
-import {checkStringSize} from './utils.js';
+import {checkStringSize, successMessage} from './utils.js';
 import {startEffects, finishEffects} from './effects.js';
 import {startZoom, removeZoom} from './zoom.js';
 import {post} from './net.js';
-const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+import {errorMessage} from './utils.js';
 const uploader = document.querySelector('#upload-file');
 const body = document.querySelector('body');
 const overlay = document.querySelector('.img-upload__overlay');
@@ -12,11 +12,10 @@ const form = document.querySelector('.img-upload__form');
 const comment = form.querySelector('.text__description');
 const hashtag = form.querySelector('.text__hashtags');
 const submit = form.querySelector('.img-upload__submit');
-const success = document.querySelector('#success').content.querySelector('section');
-const error = document.querySelector('#error').content.querySelector('section');
 const preview = document.querySelector('.img-upload__preview').querySelector('img');
 const effectsPreviews = document.querySelectorAll('.effects__preview');
 const LENGTH_LIMIT = 140;
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const commentsRegex = /^#[а-яa-zё0-9]{1,19}$/;
 const emptyRegex = /^\s*$/;
 let commentsCorrect = true;
@@ -28,7 +27,7 @@ const close = () => {
   removeZoom();
 };
 
-const escClosing = (evt) => {
+const escClose = (evt) => {
   if (evt.key === 'Escape') {
     close();
   }
@@ -49,24 +48,24 @@ uploader.addEventListener('change', () => {
   startEffects();
   startZoom();
   cancel.addEventListener('click', close, {once: true});
-  document.addEventListener('keydown', escClosing, {once: true});
+  document.addEventListener('keydown', escClose, {once: true});
 });
 
 const stopPropagate = (evt) => evt.stopPropagation();
 
-hashtag.onfocus = () => {
+hashtag.addEventListener('focus', () => {
   hashtag.addEventListener('keydown', stopPropagate);
-};
-hashtag.onblur = () => {
+});
+hashtag.addEventListener('blur',  () => {
   hashtag.removeEventListener('keydown', stopPropagate);
-};
+});
 
-comment.onfocus = () => {
+comment.addEventListener('focus',   () => {
   comment.addEventListener('keydown', stopPropagate);
-};
-comment.onblur = () => {
+});
+comment.addEventListener('blur',  () => {
   comment.removeEventListener('keydown', stopPropagate);
-};
+});
 
 const pristine = new Pristine(form, {
   classTo: 'text',
@@ -129,7 +128,7 @@ pristine.addValidator(
 
 const closeMessage = (msg) => {
   body.removeChild(msg);
-  document.addEventListener('keydown', escClosing, {once: true});
+  document.addEventListener('keydown', escClose, {once: true});
 };
 
 
@@ -159,21 +158,20 @@ const setMessageListeners = (window) => {
 };
 
 
-const message = (template) => {
-  const window = template.cloneNode(true);
-  body.appendChild(window);
-  setMessageListeners(window);
+const showMessage = (template) => {
+  body.appendChild(template);
+  setMessageListeners(template);
 };
 
-async function posting(data) {
+async function asyncPost(data) {
   const result = await post(data);
-  document.removeEventListener('keydown', escClosing);
+  document.removeEventListener('keydown', escClose);
   if (result) {
     close();
-    message(success);
+    showMessage(successMessage);
   } else {
     overlay.classList.add('hidden');
-    message(error);
+    showMessage(errorMessage);
   }
 }
 
@@ -181,6 +179,6 @@ form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const valid = pristine.validate();
   if (valid) {
-    posting(new FormData(evt.target));
+    asyncPost(new FormData(evt.target));
   }
 });

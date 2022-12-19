@@ -2,8 +2,6 @@ const uploadForm = document.querySelector('.img-upload__form');
 const imgPreview = uploadForm.querySelector('.img-upload__preview');
 const slider = uploadForm.querySelector('.effect-level__slider');
 const level = uploadForm.querySelector('.effect-level__value');
-noUiSlider.create(slider, {range: {min: 0, max: 0}, start: 0});
-
 const filter = {
   chrome: 'grayscale',
   sepia: 'sepia',
@@ -62,6 +60,7 @@ const options = {
   }
 };
 
+noUiSlider.create(slider, {range: {min: 0, max: 0}, start: 0});
 
 export const clearFilter = () => {
   imgPreview.style.filter = 'none';
@@ -71,13 +70,13 @@ export const clearFilter = () => {
   imgPreview.classList.add('effects__preview--none');
 };
 
-const effectSelection = (evt) => {
+const selectEffect = (evt) => {
   const evtId = evt.target.id;
-  const splited = evtId.split('-');
-  if (splited.length !== 2) {
+  const evtParts = evtId.split('-');
+  if (evtParts.length !== 2) {
     return;
   }
-  const [type, effect] = splited;
+  const [type, effect] = evtParts;
   if (type !== 'effect') {
     return;
   }
@@ -99,11 +98,11 @@ const effectSelection = (evt) => {
 };
 
 export const startEffects = () => {
-  uploadForm.addEventListener('change', effectSelection);
+  uploadForm.addEventListener('change', selectEffect);
   clearFilter();
 };
 
 export const finishEffects = () => {
-  uploadForm.removeEventListener('change', effectSelection);
+  uploadForm.removeEventListener('change', selectEffect);
   clearFilter();
 };
